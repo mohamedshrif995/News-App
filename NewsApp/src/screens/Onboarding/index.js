@@ -3,8 +3,9 @@ import { View, Text, Image } from 'react-native'
 import AppIntroSlider from 'react-native-app-intro-slider';
 import Icon from 'react-native-vector-icons/dist/Ionicons'
 import { useNavigation } from '@react-navigation/native'
+import { connect } from 'react-redux'
 import { styles } from './styles'
-
+import * as authAction from '@Actions/authActions'
 const slides = [
     {
         key: 1,
@@ -28,7 +29,9 @@ const slides = [
         backgroundColor: '#22bcb5',
     }
 ];
-const Onboarding = () => {
+const Onboarding = (props) => {
+    console.log('props', props);
+    const { updateOnboarding } = props
     const [showRealApp, setShowRealApp] = React.useState(false)
     const navigation = useNavigation()
 
@@ -83,7 +86,8 @@ const Onboarding = () => {
         // User finished the introduction. Show real app through
         // navigation or simply by controlling state
         // setShowRealApp(true)
-        navigation.navigate('Login');
+        props.updateOnboarding(true)
+        navigation.navigate('Tabs');
     }
     return (
         <View style={{ flex: 1 }}>
@@ -105,4 +109,15 @@ const Onboarding = () => {
     )
 }
 
-export default Onboarding
+const mapStateToProps = (state) => {
+    return {
+        isBoardingDisabled: state.auth.isBoardingDisabled
+    }
+}
+const mapDispatchToProps = (dispatch) => {
+    return {
+
+        updateOnboarding: (status) => dispatch(authAction.updateOnboarding(status))
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Onboarding)

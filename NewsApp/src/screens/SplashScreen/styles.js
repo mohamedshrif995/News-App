@@ -8,7 +8,7 @@ export const styles = (background) =>
             justifyContent: 'center',
             alignItems: 'center',
             paddingTop: Platform.OS === 'ios' ? 20 : 0,
-            backgroundColor: '#ffffff'
+            backgroundColor: background
         },
         splashScreen_RootView: {
             justifyContent: 'center',

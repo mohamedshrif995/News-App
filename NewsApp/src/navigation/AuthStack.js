@@ -1,5 +1,8 @@
 import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
+import { createDrawerNavigator } from '@react-navigation/drawer';
+
+import { connect } from 'react-redux'
 import Tabs from './Tabs'
 import SplashScreen from '@Screen/SplashScreen'
 import Login from '@Screen/Login'
@@ -8,10 +11,13 @@ import Onboarding from '@Screen/Onboarding'
 import NewsDetails from '@Screen/NewsDetails'
 import CategoryList from '@Screen/CategoryList'
 
-const AuthStack = () => {
+const AuthStack = (props) => {
+    console.log('propsauthstack', props);
+    const { isBoardingDisabled } = props
     const Stack = createStackNavigator()
+
     return (
-        <Stack.Navigator initialRouteName='SplashScreen' screenOptions={{
+        <Stack.Navigator initialRouteName={isBoardingDisabled ? 'SplashScreen' : 'Onboarding'} screenOptions={{
             headerShown: false
         }}>
             <Stack.Screen name='SplashScreen' component={SplashScreen} />
@@ -25,4 +31,9 @@ const AuthStack = () => {
     )
 }
 
-export default AuthStack
+const mapStateToProps = (state) => {
+    return {
+        isBoardingDisabled: state.auth.isBoardingDisabled
+    }
+}
+export default connect(mapStateToProps)(AuthStack)
